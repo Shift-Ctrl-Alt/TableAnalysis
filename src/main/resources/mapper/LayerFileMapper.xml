@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oymn.tableanalysis.dao.mapper.LayerFileDao">
+    <insert id="addLayerFile" useGeneratedKeys="true" keyProperty="id">
+        insert into t_layer_file(id, name, path, survey_time, type, create_by, area, catalog_id) 
+        VALUES (#{id}, #{name}, #{path}, #{surveyTime}, #{type}, #{createBy}, #{area}, #{catalogId}) 
+    </insert>
+    <delete id="deleteLayerFile">
+        delete from t_layer_file where id = #{layerFileId}
+    </delete>
+
+    <select id="getCollectionIdByCatalogId" resultType="java.lang.Long">
+        select id
+        from t_layer_file_collection
+        where catalog_id = #{catalogId}
+    </select>
+    <select id="getLayerFile" resultType="com.oymn.tableanalysis.dao.pojo.LayerFile">
+        select id, name, path, survey_time, type, create_by, create_time, update_time, area, catalog_id
+        from t_layer_file
+        where catalog_id = #{catalogId} and survey_time = #{queryTime}
+        <if test="area != null">
+            and area = #{area}
+        </if>
+    </select>
+    <select id="getLayerFileById" resultType="com.oymn.tableanalysis.dao.pojo.LayerFile">
+        select id, name, path, survey_time, type, create_by, create_time, update_time, area, catalog_id
+        from t_layer_file
+        where id = #{layerId}
+    </select>
+</mapper>

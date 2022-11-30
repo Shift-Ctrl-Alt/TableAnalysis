@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oymn.tableanalysis.dao.mapper.UserDao">
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user(username, phone, email, password, create_time, update_time)
+        VALUES (#{username}, #{phone}, #{email}, #{password}, #{createTime}, #{updateTime})
+    </insert>
+    <insert id="addRole">
+        insert into t_user_role(user_id, role_id) 
+        VALUES (#{userId}, #{roleId}) 
+    </insert>
+    <update id="updateUser">
+        update t_user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <delete id="deleteUserById">
+        delete
+        from t_user
+        where id = #{id}
+    </delete>
+    <delete id="deleteRole">
+        delete from t_user_role where user_id = #{userId} and role_id = #{roleId}
+    </delete>
+    <delete id="deleteRoleByUserId">
+        delete from t_user_role where user_id = #{userId}
+    </delete>
+
+    <select id="getUserByName" resultType="com.oymn.tableanalysis.dao.pojo.User">
+        select id, username, phone, email, password, create_time createTime, update_time updateTime
+        from t_user
+        where username = #{username}
+    </select>
+    <select id="getUserCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_user
+    </select>
+    <select id="getUsers" resultType="com.oymn.tableanalysis.dao.pojo.User">
+        select id, username, phone, email, password, create_time createTime, update_time updateTime
+        from t_user
+        order by create_time desc
+        limit #{start}, #{size}
+    </select>
+    <select id="getUserById" resultType="com.oymn.tableanalysis.dao.pojo.User">
+        select id, username, phone, email, password, create_time createTime, update_time updateTime
+        from t_user
+        where id = #{userId}
+    </select>
+    <select id="getUserRoleByUidAndRid" resultType="java.lang.Long">
+        select id
+        from t_user_role
+        where user_id = #{userId} and role_id = #{roleId}
+    </select>
+    <select id="getRolesByUserId" resultType="com.oymn.tableanalysis.dao.pojo.Role">
+        select tr.id, tr.name, tr.description, tr.create_time, tr.update_time
+        from t_user tu join t_user_role tur join t_role tr
+        on tu.id = tur.user_id and tr.id = tur.role_id 
+        where tu.id = #{userId}
+    </select>
+</mapper>

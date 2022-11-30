@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oymn.tableanalysis.dao.mapper.ColorAttrDao">
+    <insert id="addColorAttr" useGeneratedKeys="true" keyProperty="id">
+        insert into t_layer_color(id, layer_id, rgb, name, from_value, to_value) 
+        values (#{id}, #{layerId}, #{rgb}, #{name}, #{fromValue}, #{toValue})
+    </insert>
+    <delete id="deleteColorAttrByLayerId">
+        delete from t_layer_color where layer_id = #{layerFileId}
+    </delete>
+    <delete id="deleteColorAttr">
+        delete from t_layer_color where id = #{id}
+    </delete>
+
+    <select id="getColorAttr" resultType="com.oymn.tableanalysis.dao.pojo.ColorAttr">
+        select id, layer_id, rgb, name, from_value, to_value, create_time, update_time
+        from t_layer_color
+        where layer_id = #{layerFileId}
+    </select>
+</mapper>

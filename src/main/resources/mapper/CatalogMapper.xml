@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oymn.tableanalysis.dao.mapper.CatalogDao">
+    <insert id="addCatalog" useGeneratedKeys="true" keyProperty="id">
+        insert into t_catalog(id, name, time_select, create_by) values (#{id}, #{name}, #{timeSelect}, #{createBy})
+    </insert>
+    <update id="updateCatalog">
+        update t_catalog
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <delete id="deleteCatalog">
+        delete from t_catalog where id = #{id}
+    </delete>
+
+    <select id="getAllCatalog" resultType="com.oymn.tableanalysis.dao.pojo.Catalog">
+        select id, name, parent_id, time_select, create_by, create_time, update_time
+        from t_catalog
+    </select>
+    <select id="getCatalogById" resultType="com.oymn.tableanalysis.dao.pojo.Catalog">
+        select id, name, parent_id, time_select, create_by, create_time, update_time
+        from t_catalog
+        where id = #{id}
+    </select>
+</mapper>

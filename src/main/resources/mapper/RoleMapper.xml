@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oymn.tableanalysis.dao.mapper.RoleDao">
+    <insert id="setUserRole">
+        insert into t_user_role(user_id, role_id)
+        VALUES (#{userId}, #{roleId})
+    </insert>
+    <insert id="addRole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_role(name, description)
+        VALUES (#{name}, #{description})
+    </insert>
+    <insert id="addPermission">
+        insert into t_role_permission(role_id, permission_id) 
+        VALUES(#{roleId}, #{permissionId}) 
+    </insert>
+    <update id="updateRole">
+        update t_role
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <delete id="deleteRoleById">
+        delete from t_role where id = #{roleId}
+    </delete>
+    <delete id="deletePermission">
+        delete from t_role_permission 
+        where role_id = #{roleId} and permission_id = #{permissionId}
+    </delete>
+    <delete id="deletePermissionByRoleId">
+        delete from t_role_permission where role_id = #{roleId}
+    </delete>
+
+    <select id="getPermissionByUserId" resultType="java.lang.String">
+        select distinct tp.name
+        from t_user tu
+                 join t_user_role tur
+                 join t_role tr
+                 join t_permission tp
+                 join t_role_permission trp
+                      on tu.id = tur.user_id and tur.role_id = tr.id and tr.id = trp.role_id and
+                         tp.id = trp.permission_id
+        where tu.id = #{userId}
+    </select>
+
+    <select id="getPermissionByPath" resultType="org.springframework.security.access.ConfigAttribute">
+        select name
+        from t_permission
+        where url = #{url}
+    </select>
+    <select id="getRoleByName" resultType="com.oymn.tableanalysis.dao.pojo.Role">
+        select id, name, description, create_time createTime, update_time updateTime
+        from t_role
+        where name = #{roleName}
+    </select>
+    <select id="getRoleCount" resultType="java.lang.Integer">
+        select count(1)
+        from t_role
+    </select>
+    <select id="getRoles" resultType="com.oymn.tableanalysis.dao.pojo.Role">
+        select id, name, description, create_time createTime, update_time updateTime
+        from t_role
+        limit #{start}, #{size}
+    </select>
+    <select id="getRoleById" resultType="com.oymn.tableanalysis.dao.pojo.Role">
+        select id, name, description, create_time createTime, update_time updateTime
+        from t_role
+        where id = #{roleId}
+    </select>
+    <select id="getPermissionByRoleId" resultType="com.oymn.tableanalysis.dao.pojo.Permission">
+        select tp.id, tp.name, tp.description, tp.url, tp.create_time, tp.update_time
+        from t_permission tp join t_role tr join t_role_permission trp 
+        on tp.id = trp.permission_id and tr.id = trp.role_id
+        where tr.id = #{roleId}
+    </select>
+    <select id="getRolePermissionByRidAndPid" resultType="java.lang.Long">
+        select id
+        from t_role_permission
+        where role_id = #{roleId} and permission_id = #{permissionId}
+    </select>
+    <select id="getRoleByUsername" resultType="com.oymn.tableanalysis.dao.pojo.Role">
+        select tr.id, tr.name, tr.description, tr.create_time, tr.update_time
+        from t_user tu join t_user_role tur join t_role tr 
+        on tu.id = tur.user_id and tur.role_id = tr.id
+        where tu.username = #{username}
+    </select>
+</mapper>
