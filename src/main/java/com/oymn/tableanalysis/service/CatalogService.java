@@ -8,8 +8,7 @@ import java.util.List;
 public interface CatalogService {
     //查询目录
     List<CatalogVo> getAllCatalog();
-
-
+    
     String addCatalog(Catalog catalog);
 
     void deleteCatalog(Long id);

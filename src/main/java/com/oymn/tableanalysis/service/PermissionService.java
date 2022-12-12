@@ -7,7 +7,7 @@ import com.oymn.tableanalysis.dao.pojo.Permission;
 public interface PermissionService {
 
 
-    Long addPermission(Permission permission);
+    String addPermission(Permission permission);
 
     void updatePermission(Permission permission);
 

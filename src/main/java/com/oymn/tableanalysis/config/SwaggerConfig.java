@@ -24,18 +24,6 @@ public class SwaggerConfig {
     @Bean
     public Docket docket(){
         return new Docket(DocumentationType.OAS_30)
-                //.apiInfo(apiInfo())
-                //.enable(true) //设置是否启动Swagger
-                //.select()
-                ////RequestHandlerSelectors，配置要扫描的接口方法
-                ////basePackage：指定要扫描的包
-                ////any()：扫描全部
-                ////none()：都不扫描
-                ////withClassAnnotation()：扫描类上的注解——参数是一个注解的反射对象
-                ////withMethodAnnotation()：扫描方法上的注解——get post
-                //.apis(RequestHandlerSelectors.basePackage("com.oymn.geoinvestigate.controller"))
-                //.paths(PathSelectors.ant("/**"))//过滤地址
-                //.build();//工厂模式
                 .apiInfo(apiInfo())
                 .enable(true)
                 .select()

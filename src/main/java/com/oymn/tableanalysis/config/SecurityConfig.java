@@ -1,4 +1,5 @@
 package com.oymn.tableanalysis.config;
+import com.oymn.tableanalysis.handler.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +26,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    
+
+    //用于登录验证时对Token的验证
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    //认证失败处理器
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    //权限不足处理器
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,11 +49,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //认证所有的请求
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/user/login","/user/register","/user/token/check").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证成功
                 .anyRequest().authenticated();
 
         http.headers().frameOptions().disable();
+
+        //添加过滤器
+        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+        //配置异常处理器
+        http.exceptionHandling()
+                //配置认证失败处理器
+                .authenticationEntryPoint(authenticationEntryPoint)
+                //配置权限不足处理器
+                .accessDeniedHandler(accessDeniedHandler);
 
         //允许跨域
         http.cors();
@@ -56,6 +80,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/v3/api-docs",
                 "/webjars/**");
     }
-    
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
     
 }

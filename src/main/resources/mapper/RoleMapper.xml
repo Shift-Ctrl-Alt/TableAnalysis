@@ -3,12 +3,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oymn.tableanalysis.dao.mapper.RoleDao">
     <insert id="setUserRole">
-        insert into t_user_role(user_id, role_id)
-        VALUES (#{userId}, #{roleId})
+        insert into t_user_role(id, user_id, role_id)
+        VALUES (#{id}, #{userId}, #{roleId})
     </insert>
     <insert id="addRole" useGeneratedKeys="true" keyProperty="id">
-        insert into t_role(name, description)
-        VALUES (#{name}, #{description})
+        insert into t_role(id, name, description)
+        VALUES (#{id}, #{name}, #{description})
     </insert>
     <insert id="addPermission">
         insert into t_role_permission(role_id, permission_id) 

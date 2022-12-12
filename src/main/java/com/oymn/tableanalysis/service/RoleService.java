@@ -1,4 +1,5 @@
 package com.oymn.tableanalysis.service;
+
 import com.oymn.tableanalysis.dao.pojo.PageResult;
 import com.oymn.tableanalysis.dao.pojo.Permission;
 import com.oymn.tableanalysis.dao.pojo.Role;
@@ -35,7 +36,7 @@ public interface RoleService {
      * @param role
      * @return
      */
-    Long addRole(Role role);
+    String addRole(Role role);
 
     /**
      * 更新角色

@@ -19,20 +19,22 @@ public class LoginUser implements UserDetails {
 
     private List<String> permissions;
 
+
+
     public LoginUser(User user, List<String> permissions) {
         this.user = user;
         this.permissions = permissions;
     }
-    
+
     //设置该属性不进行序列化
     @JSONField(serialize = false)
     private List<SimpleGrantedAuthority> authorities;
-    
-    
+
+
     //获取用户的所有权限
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(authorities!=null){
+        if (authorities != null) {
             return authorities;
         }
         //把permissions中String类型的权限信息封装成SimpleGrantedAuthority对象

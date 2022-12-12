@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oymn.tableanalysis.dao.mapper.PermissionDao">
     <insert id="addPermission" useGeneratedKeys="true" keyProperty="id">
-        insert into t_permission(name, description, url) 
-        values (#{name}, #{description}, #{url}) 
+        insert into t_permission(id, name, description, url) 
+        values (#{id}, #{name}, #{description}, #{url}) 
     </insert>
     <update id="updatePermission">
         update t_permission

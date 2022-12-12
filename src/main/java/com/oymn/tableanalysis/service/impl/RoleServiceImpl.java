@@ -53,14 +53,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Long addRole(Role role) {
+    public String addRole(Role role) {
         Role dbRole = roleDao.getRoleByName(role.getName());
         if(dbRole != null){
             throw new ConditionException("该角色名称已存在");
         }
         
         roleDao.addRole(role);
-        return role.getId();
+        return role.getId().toString();
     }
 
     @Override

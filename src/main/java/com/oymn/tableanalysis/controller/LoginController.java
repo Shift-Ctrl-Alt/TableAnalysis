@@ -11,6 +11,7 @@ import com.oymn.tableanalysis.dao.pojo.User;
 import com.oymn.tableanalysis.service.LoginService;
 import com.oymn.tableanalysis.service.UserService;
 import com.oymn.tableanalysis.utils.RSAUtil;
+import com.oymn.tableanalysis.utils.SnowFlake;
 import com.oymn.tableanalysis.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,6 +88,7 @@ public class LoginController {
     @ApiOperation("注册")
     @PostMapping("register")
     public Result register(@RequestBody User user){
+        user.setId(SnowFlake.nextId());
         loginService.register(user);
         return Result.success();
     }

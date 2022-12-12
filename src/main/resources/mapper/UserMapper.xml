@@ -4,8 +4,8 @@
 <mapper namespace="com.oymn.tableanalysis.dao.mapper.UserDao">
 
     <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
-        insert into t_user(username, phone, email, password, create_time, update_time)
-        VALUES (#{username}, #{phone}, #{email}, #{password}, #{createTime}, #{updateTime})
+        insert into t_user(id, username, phone, email, password)
+        VALUES (#{id}, #{username}, #{phone}, #{email}, #{password})
     </insert>
     <insert id="addRole">
         insert into t_user_role(user_id, role_id) 

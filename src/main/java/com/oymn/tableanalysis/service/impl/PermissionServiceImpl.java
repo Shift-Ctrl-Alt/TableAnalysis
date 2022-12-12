@@ -20,7 +20,7 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionDao permissionDao;
 
     @Override
-    public Long addPermission(Permission permission) {
+    public String addPermission(Permission permission) {
         Permission dbPermission = permissionDao.getPermissionByName(permission.getName());
         if(dbPermission != null){
             throw new ConditionException("权限名称已存在");
@@ -28,7 +28,7 @@ public class PermissionServiceImpl implements PermissionService {
         
         permissionDao.addPermission(permission);
         
-        return permission.getId();
+        return permission.getId().toString();
     }
 
     @Override

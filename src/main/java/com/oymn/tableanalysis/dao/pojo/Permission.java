@@ -1,5 +1,7 @@
 package com.oymn.tableanalysis.dao.pojo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,6 +11,7 @@ import java.util.Date;
 public class Permission {
     
     @ApiModelProperty("主键id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     
     @ApiModelProperty("权限名称")
